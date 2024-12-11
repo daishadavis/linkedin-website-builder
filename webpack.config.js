@@ -2,58 +2,65 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './client/index.js',
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: '/'
-    },
-    mode: 'development',
-    devtool: 'eval-source-map',
-    devServer: {
-        host: 'localhost',
-        port: 8080,
-        static: {
-            directory: path.resolve(__dirname, 'dist'),
-            publicPath: '/',
-        }
-
+  entry: './client/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
+  },
+  mode: 'development',
+  devtool: 'eval-source-map',
+  devServer: {
+    host: 'localhost',
+    port: 8080,
+    static: {
+      directory: path.resolve(__dirname, 'dist'),
     },
     hot: true,
     open: true,
     historyApiFallback: true,
-    headers: {'Access-Control-Allow-Origin': '*'},
-    proxy: {
-        '/api/**': {
-            target: 'http://localhost:3000/',
-            secure: false,
-        }
-    },
-    module: {
-        rules: [
-            {
-                test: /.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                }
-            },
-           {
-            test: /.(css|scss)$/,
-            exclude: /node_modules/,
-            use: ['style-loader', 'css-loader', 'sass-loader']
-           }
-        ]
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './client/index.html',
-        })
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    proxy: [
+      {
+        context: ['/api'], // Specify the API paths to proxy
+        target: 'http://localhost:3000', // Backend server
+        secure: false,
+        changeOrigin: true,
+      },
     ],
-    resolve: {
-        extensions: ['js', 'jsx'],
-    }
-}
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.(css|scss)$/,
+        exclude: /node_modules/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        use: {
+            loader: 'url-loader',
+        }
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './client/index.html',
+    }),
+  ],
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
+};
+
 
 
 /**
