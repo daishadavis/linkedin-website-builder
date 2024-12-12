@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
 
-const TemplatePreview = ({ data}) => {
+const Template1 = ({data}) => {
     return (
-        <div>
+        <div className="template1-container">
           <h1>{data?.header?.name}</h1>
           <h2>{data?.header?.headline}</h2>
+          <p><strong>Location:</strong> {data?.header?.location}</p>
+    
+          <h3>Summary</h3>
           <p>{data?.summary?.join(' ')}</p>
+    
           <h3>Experience</h3>
           <ul>
             {data?.experience?.map((job, index) => (
@@ -19,4 +23,4 @@ const TemplatePreview = ({ data}) => {
       );
 }
 
-export default TemplatePreview
+export default Template1
