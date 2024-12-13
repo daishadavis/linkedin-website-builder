@@ -2,44 +2,57 @@ import React, { useState } from 'react';
 import UploadPage from './pages/UploadPage';
 import PreviewPage from './pages/PreviewPage';
 import Template1 from './website-templates/Template1';
+import './stylesheets/App.css';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('upload');
   const [data, setData] = useState(null);
 
-  // Handles page transitions
   const handleNext = (page, newData = null) => {
-    if (newData) setData(newData);
+    if (newData) {
+      console.log('Updating data:', newData); // Debug log
+      setData(newData); // Update state
+    }
     setCurrentPage(page);
   };
 
-  // Handle upload completion and make GET request to fetch data
-  const handleUploadComplete = async (fileData) => {
-    setData(fileData);
-    handleNext('preview'); // Move to template preview page
-  };
-
-  // Make GET request to fetch the data from backend
   const fetchExtractedData = async () => {
+    console.log('Fetching data from /api/data...');
     try {
-      const response = await fetch('/api/data');  // GET request to fetch data
+      const response = await fetch('/api/data');
       if (response.ok) {
         const result = await response.json();
-        setData(result.data);  // Set the extracted data
-        handleNext('template');  // Move to template display page
+        console.log('Fetched data:', result.data);
+        setData(result.data); // Save fetched data
+        handleNext('template'); // Navigate to template page
       } else {
-        console.error('Failed to fetch data');
+        console.error('Failed to fetch data, status:', response.status);
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error during GET request:', error);
     }
   };
 
   return (
-    <div>
-      {currentPage === 'upload' && <UploadPage onUploadComplete={handleUploadComplete} />}
-      {currentPage === 'preview' && <PreviewPage data={data} onTemplateSelect={() => handleNext('template', data)} />}
-      {currentPage === 'template' && <Template1 data={data} />}  {/* Render Template1 */}
+    <div >
+      <div>
+      {currentPage === 'upload' && (
+        <UploadPage
+          onUploadComplete={(fileData) => {
+            console.log('Upload complete:', fileData); // Debug log
+            setData(fileData); // Set uploaded data
+            handleNext('preview'); // Navigate to preview
+          }}
+        />
+      )}
+      {currentPage === 'preview' && (
+        <PreviewPage
+          data={data}
+          onTemplateSelect={fetchExtractedData} // Fetch data when selecting template
+        />
+      )}
+      {currentPage === 'template' && <Template1 data={data} />}
+      </div>
     </div>
   );
 };

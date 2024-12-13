@@ -1,11 +1,12 @@
 import React from 'react'
 
+
 const Header = () => {
   return (
-    <div>
+    <div className='text-white p-4 text-center text-5xl'>
         <h1>LinkedIn Profile-Converter</h1>
     </div>
   )
 }
 
-export default Header
+export default Header;

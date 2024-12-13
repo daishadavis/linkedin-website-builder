@@ -1,17 +1,17 @@
 import React from 'react'
 
-const TemplatePreview = ({ data}) => {
+const TemplatePreview = ({ data }) => {
     return (
-        <div>
-          <h1>{data?.header?.name}</h1>
-          <h2>{data?.header?.headline}</h2>
-          <p>{data?.summary?.join(' ')}</p>
-          <h3>Experience</h3>
-          <ul>
+        <div className="template-preview-container">
+          <h1 className="template-preview-title" >{data?.header?.name}</h1>
+          <h2 className="template-preview-headline" >{data?.header?.headline}</h2>
+          <p className="template-preview-summary" >{data?.summary?.join(' ')}</p>
+          <h3 className="template-preview-experience-title" >Classic</h3>
+          <ul className="template-preview-experience-list" >
             {data?.experience?.map((job, index) => (
-              <li key={index}>
-                <strong>{job.company}</strong> - {job.position}
-                <p>{job.duration}</p>
+              <li key={index} className="template-preview-experience-item">
+                <strong className="experience-company">{job.company}</strong> - {job.position}
+                <p className="experience-duration">{job.duration}</p>
               </li>
             ))}
           </ul>

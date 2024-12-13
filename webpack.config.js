@@ -22,8 +22,8 @@ module.exports = {
     headers: { 'Access-Control-Allow-Origin': '*' },
     proxy: [
       {
-        context: ['/api'], // Specify the API paths to proxy
-        target: 'http://localhost:3000', // Backend server
+        context: ['/api'],
+        target: 'http://localhost:3000',
         secure: false,
         changeOrigin: true,
       },
@@ -41,7 +41,7 @@ module.exports = {
       {
         test: /\.(css|scss)$/,
         exclude: /node_modules/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: ['style-loader', 'css-loader', 'sass-loader', 'postcss-loader'],
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
@@ -57,6 +57,6 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.css'],
   },
 };
