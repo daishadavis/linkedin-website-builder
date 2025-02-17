@@ -1,4 +1,6 @@
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const pdfController = require('../controllers/pdfController.js')
 
 const router = express.Router();
@@ -27,5 +29,18 @@ router.get('/data', (req, res) => {
     }
     res.status(200).json({ data: extractedDataStore });
 });
+
+router.get('/template/:templateName', (req, res) => {
+    const {templateName} = req.params;
+    const templatePath = path.join(__dirname, '../website-templates', `${templateName}.html`);
+    console.log('Fetching template from:', templatePath);
+
+    fs.readFile(templatePath, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(404).json({error: 'Template not found'});
+        }
+        res.send(data)
+    })
+})
 
 module.exports = router;

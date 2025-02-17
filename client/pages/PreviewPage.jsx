@@ -1,27 +1,25 @@
-import React from 'react'
-import Header from '../components/Header'
+// PreviewPage.jsx
+import React from 'react';
+import Header from '../components/Header';
 import TemplateSelector from '../components/TemplateSelector';
 
-const PreviewPage = ({data, onTemplateSelect}) => {
-    return (
-        <div className=''>
+const PreviewPage = ({ data, onTemplateSelect }) => {
+  return (
+    <div>
+      <header>
+        <Header />
+      </header>
+      <section>
+        <TemplateSelector 
+          data={data} 
+          onTemplateSelect={(templateName) => {
+            console.log('Template selected, fetching data...', templateName);
+            onTemplateSelect(templateName);
+          }} 
+        />
+      </section>
+    </div>
+  );
+};
 
-          <header className=''>
-          <Header />
-          </header>
-
-          <section className=''>
-          <TemplateSelector 
-            data={data} 
-            onTemplateSelect={() => {
-              console.log('Template selected, fetching data...');
-              onTemplateSelect(); // Trigger fetchExtractedData in App.jsx
-            }} 
-          />
-          </section>
-
-        </div>
-      );
-}
-
-export default PreviewPage
+export default PreviewPage;
