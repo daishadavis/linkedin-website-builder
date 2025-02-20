@@ -15,15 +15,25 @@ const HTMLTemplatePage = ({ templateName, data }) => {
     // Fetch the HTML template
     fetch(`/api/template/${templateName}`)
       .then((res) => {
-        if (!res.ok) throw new Error(`Template HTTP error! Status: ${res.status}`);
+        if (!res.ok)
+          throw new Error(`Template HTTP error! Status: ${res.status}`);
         return res.text();
       })
       .then((template) => {
         let updatedHtml = template;
         // Replace placeholders with actual data
-        updatedHtml = updatedHtml.replace(/{headerName}/g, data.header?.name || '');
-        updatedHtml = updatedHtml.replace(/{headerHeadline}/g, data.header?.headline || '');
-        updatedHtml = updatedHtml.replace(/{headerLocation}/g, data.header?.location || '');
+        updatedHtml = updatedHtml.replace(
+          /{headerName}/g,
+          data.header?.name || ''
+        );
+        updatedHtml = updatedHtml.replace(
+          /{headerHeadline}/g,
+          data.header?.headline || ''
+        );
+        updatedHtml = updatedHtml.replace(
+          /{headerLocation}/g,
+          data.header?.location || ''
+        );
 
         const summaryText = Array.isArray(data.summary)
           ? data.summary.join('<br/>')
@@ -48,14 +58,13 @@ const HTMLTemplatePage = ({ templateName, data }) => {
         // Fetch CSS as text
         fetch(`/api/template/${templateName}.css`)
           .then((resCss) => {
-            if (!resCss.ok) throw new Error(`CSS HTTP error! Status: ${resCss.status}`);
+            if (!resCss.ok)
+              throw new Error(`CSS HTTP error! Status: ${resCss.status}`);
             return resCss.text();
           })
           .then((cssText) => {
-            // Save the CSS for download purposes.
             setCssContent(cssText);
-
-            // Inline the CSS into a <style> tag in the head for preview.
+            // Inline the CSS into a <style> tag in the head.
             if (updatedHtml.match(/<head>/i)) {
               updatedHtml = updatedHtml.replace(
                 /<head>/i,
@@ -64,7 +73,7 @@ const HTMLTemplatePage = ({ templateName, data }) => {
             } else {
               updatedHtml = `<head><style>${cssText}</style></head>` + updatedHtml;
             }
-            console.log("Final HTML content:", updatedHtml);
+            console.log('Final HTML content:', updatedHtml);
             setHtmlContent(updatedHtml);
           })
           .catch((cssErr) => {
@@ -87,7 +96,7 @@ const HTMLTemplatePage = ({ templateName, data }) => {
   };
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {!error && !htmlContent && <p>Loading template...</p>}
       {htmlContent && (
@@ -100,7 +109,9 @@ const HTMLTemplatePage = ({ templateName, data }) => {
         <button
           onClick={handleDownload}
           style={{
-            marginTop: '20px',
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
             padding: '10px 20px',
             backgroundColor: '#2b6cb0',
             color: 'white',
