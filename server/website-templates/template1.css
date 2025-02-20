@@ -1,0 +1,40 @@
+/* Template-specific custom styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7fafc;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  background-color: #2b6cb0;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+.name {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.headline,
+.location {
+  font-size: 1.25rem;
+}
+
+.summary, .experience, .education, .skills {
+  padding: 1rem;
+  margin: 1rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.summary h3, .experience h3, .education h3, .skills h3 {
+  font-size: 1.75rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}

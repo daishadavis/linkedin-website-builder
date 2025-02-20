@@ -4,30 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{headerName}'s Portfolio</title>
-  <link rel="stylesheet" href="/templates/styles/template1.css" />
+  <link rel="stylesheet" href="/api/template/template1.css">
 </head>
 <body>
-  <header>
-    <h1>{headerName}</h1>
-    <h2>{headerHeadline}</h2>
+  <header class="header">
+    <h1 class="name">{headerName}</h1>
+    <h2 class="headline">{headerHeadline}</h2>
+    <p class="location">{headerLocation}</p>
   </header>
-  <section>
+  <section class="summary">
     <h3>Summary</h3>
     <p>{summary}</p>
   </section>
-  <section>
+  <section class="experience">
     <h3>Experience</h3>
-    <ul>
-      {experience}
-    </ul>
+    <ul>{experience}</ul>
   </section>
-  <section>
+  <section class="education">
     <h3>Education</h3>
-    <ul>
-      {education}
-    </ul>
+    <ul>{education}</ul>
   </section>
-  <section>
+  <section class="skills">
     <h3>Skills</h3>
     <p>{skills}</p>
   </section>
