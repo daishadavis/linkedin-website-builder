@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { downloadWebsite } from '../../server/utils/downloadWebsite';
 
 const HTMLTemplatePage = ({ templateName, data }) => {
   const [htmlContent, setHtmlContent] = useState('');
+  const [cssContent, setCssContent] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -10,6 +12,7 @@ const HTMLTemplatePage = ({ templateName, data }) => {
       return;
     }
 
+    // Fetch the HTML template
     fetch(`/api/template/${templateName}`)
       .then((res) => {
         if (!res.ok) throw new Error(`Template HTTP error! Status: ${res.status}`);
@@ -48,15 +51,18 @@ const HTMLTemplatePage = ({ templateName, data }) => {
             if (!resCss.ok) throw new Error(`CSS HTTP error! Status: ${resCss.status}`);
             return resCss.text();
           })
-          .then((cssContent) => {
-            // Inline the CSS into a <style> tag in the head.
+          .then((cssText) => {
+            // Save the CSS for download purposes.
+            setCssContent(cssText);
+
+            // Inline the CSS into a <style> tag in the head for preview.
             if (updatedHtml.match(/<head>/i)) {
               updatedHtml = updatedHtml.replace(
                 /<head>/i,
-                `<head><style>${cssContent}</style>`
+                `<head><style>${cssText}</style>`
               );
             } else {
-              updatedHtml = `<head><style>${cssContent}</style></head>` + updatedHtml;
+              updatedHtml = `<head><style>${cssText}</style></head>` + updatedHtml;
             }
             console.log("Final HTML content:", updatedHtml);
             setHtmlContent(updatedHtml);
@@ -72,15 +78,39 @@ const HTMLTemplatePage = ({ templateName, data }) => {
       });
   }, [templateName, data]);
 
+  const handleDownload = () => {
+    if (!htmlContent || !cssContent) {
+      console.error('Missing generated HTML or CSS content');
+      return;
+    }
+    downloadWebsite(htmlContent, cssContent);
+  };
+
   return (
     <div>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {!error && !htmlContent && <p>Loading template...</p>}
       {htmlContent && (
         <div
-          style={{padding: '1rem', marginTop: '1rem' }}
+          style={{ padding: '1rem', marginTop: '1rem' }}
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
+      )}
+      {htmlContent && (
+        <button
+          onClick={handleDownload}
+          style={{
+            marginTop: '20px',
+            padding: '10px 20px',
+            backgroundColor: '#2b6cb0',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer'
+          }}
+        >
+          Download Website
+        </button>
       )}
     </div>
   );

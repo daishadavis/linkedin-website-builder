@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import UploadPage from './pages/UploadPage';
-import PreviewPage from './pages/PreviewPage';
 import HTMLTemplatePage from './pages/HTMLTemplatePage';
 import './stylesheets/App.css';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('upload');
   const [data, setData] = useState(null);
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  // Set a default template (you can later allow the user to choose a template)
+  const [selectedTemplate, setSelectedTemplate] = useState('template1');
 
   // Fetch extracted data from the /api/data endpoint
   const fetchExtractedData = async () => {
@@ -17,7 +17,7 @@ const App = () => {
       if (response.ok) {
         const result = await response.json();
         console.log('Fetched data:', result.data);
-        setData(result.data); 
+        setData(result.data);
       } else {
         console.error('Failed to fetch data, status:', response.status);
       }
@@ -26,10 +26,10 @@ const App = () => {
     }
   };
 
-  // Navigation helper that also handles data fetching after upload.
+  // Navigation helper: After upload, fetch data and navigate directly to template.
   const handleNext = (page, template = null) => {
-    if (page === 'preview') {
-      // After upload, fetch extracted data from /api/data
+    if (page === 'template') {
+      // Fetch the extracted data before switching to the template page.
       fetchExtractedData();
     }
     if (template) {
@@ -43,24 +43,19 @@ const App = () => {
   return (
     <div>
       {currentPage === 'upload' && (
-        <UploadPage onUploadComplete={() => handleNext('preview')} />
-      )}
-      {currentPage === 'preview' && (
-        <PreviewPage
-          data={data}
-          onTemplateSelect={(templateName) => {
-            console.log('Template selected in PreviewPage:', templateName);
-            handleNext('template', templateName);
-          }}
+        <UploadPage 
+          onUploadComplete={() => handleNext('template', 'template1')}
         />
       )}
-      {currentPage === 'template' ? (
+      {currentPage === 'template' &&
         data && selectedTemplate ? (
-          <HTMLTemplatePage templateName={selectedTemplate} data={data} />
-        ) : (
-          <p>Data or template missing</p>
-        )
-      ) : null}
+          <HTMLTemplatePage 
+            templateName={selectedTemplate} 
+            data={data} 
+          />
+        ) : currentPage === 'template' ? (
+          <p>Loading your website...</p>
+        ) : null}
     </div>
   );
 };
