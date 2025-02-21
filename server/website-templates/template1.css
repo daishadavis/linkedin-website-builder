@@ -1,40 +1,89 @@
-/* Template-specific custom styles */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f7fafc;
-  color: #333;
+/* Reset */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #F4F7F6;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Header */
 .header {
-  background-color: #2b6cb0;
-  color: white;
-  padding: 1rem;
+  background-color: #334E68; /* Deep blue-grey */
+  color: #fff;
+  padding: 2rem 1rem;
   text-align: center;
 }
 
+.header .header-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .name {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
-.headline,
+.headline {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
 .location {
-  font-size: 1.25rem;
+  font-size: 1rem;
+  opacity: 0.8;
 }
 
-.summary, .experience, .education, .skills {
-  padding: 1rem;
-  margin: 1rem;
+/* Main Content */
+main {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Sections */
+.section {
   background-color: #fff;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.summary h3, .experience h3, .education h3, .skills h3 {
+.section h3 {
   font-size: 1.75rem;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 0.5rem;
   margin-bottom: 1rem;
+  border-bottom: 2px solid #E2E8F0;
+  padding-bottom: 0.5rem;
+}
+
+/* Lists in Sections */
+.section ul {
+  list-style: none;
+}
+
+.section ul li {
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.section ul li:before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #334E68;
+}
+
+/* Skills */
+.skills p {
+  font-style: italic;
+  color: #555;
 }
